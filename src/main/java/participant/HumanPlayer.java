@@ -1,83 +1,97 @@
 package main.java.participant;
 
-import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import main.java.board.TicTacToeBoard;
 
 public class HumanPlayer implements Player {
 
+	private final char HUMAN_ICON = 'X';
+	private static Scanner input = new Scanner(System.in);
+
+
 	@Override
 	public void makeMove(TicTacToeBoard game) {
 
 		//initialize variables
-
+		boolean isValidInput = false;
+		System.out.print("Make your move! Select an unused cell from 1-9: ");
 
 		//get valid input from user
-		int playerInput = getUserInput();
+		while(!isValidInput) {
+			String playerInput = input.next();
 
+			//if input is not a number between 1-9, get new input from user
+			try{
+				isValidInput = game.isCellAvailable(Integer.parseInt(playerInput), getPlayerIcon());
+				input.nextLine();
 
-		//getMove.nextLine();
-		//System.out.println("Woahh, that value is not an integer! Try again by entering a number.");
-		//} while(!getMove.hasNextInt() && game.isCellAvailable(playerInput, getPlayerIcon()));
-
-		//check that input is valid
-
-
-
-
-	}
-
-	/** Get valid input from human
-	 * 
-	 * @return Cell from tic tac board ranging from 1-9
-	 */
-	int getUserInput() {
-
-		Scanner getMove = new Scanner(System.in);
-		System.out.println("Make your move! Select an unused cell from 1-9: ");
-		boolean isValidInput = false;
-		int playerInput = -1;
-
-
-		while (!getMove.hasNextInt() && !isValidInput ){
-			getMove.next();
-
-			if(getMove.hasNextInt()) {
-				playerInput = getMove.nextInt();
-				if(playerInput < 1 && playerInput > 9) {
-					continue;
+				if(!isValidInput) {
+					System.out.print("Make sure that cell is unused AND the number is from 1-9: ");
 				}
+
+			}catch(NumberFormatException | NoSuchElementException e) {
+				System.out.print("Woahh, that value is not an integer between 1 and 9! Try again:");//Handle error here
 			}
-			System.out.print("Woahh, that value is not an integer between 1 and 9! Try again:");
+
 		}
 
-		//close stream
-		getMove.close();
-
-		return playerInput;
+		//show updated board and close stream
+		System.out.println("\nGood move! Here's the new board:");
+		game.displayBoard();
 	}
 
-	/** Verifies that cell input is between 1-9 and cell is available.
-	 * 
-	 * @return true if the user entered a valid cell or false if invalid input was received
-	 */
-	boolean isValidInput(int playerInput, int[][] board) {
-
-		//checks to see if playerInput is between 1-9
-		if(playerInput < 1 || playerInput > 9) return false;
-
-		//translate cell into row and column then check that cell is available
-		int row = playerInput<4 ? 0: (playerInput>6? 2: 1);
-		int col = playerInput<4 ? playerInput-1:(playerInput>6? playerInput-7: playerInput-4);
-		if(board[row][col] == '-') return false;
-
-		return true;
+	@Override
+	public void congratulatePlayer() {
+		System.out.println(""
+				+ "\n\n\n`8.`8888.      ,8'  ,o888888o.     8 8888      88           `8.`888b                 ,8'  ,o888888o.     b.             8\r\n" + 
+				" `8.`8888.    ,8'. 8888     `88.   8 8888      88            `8.`888b               ,8'. 8888     `88.   888o.          8\r\n" + 
+				"  `8.`8888.  ,8',8 8888       `8b  8 8888      88             `8.`888b             ,8',8 8888       `8b  Y88888o.       8\r\n" + 
+				"   `8.`8888.,8' 88 8888        `8b 8 8888      88              `8.`888b     .b    ,8' 88 8888        `8b .`Y888888o.    8\r\n" + 
+				"    `8.`88888'  88 8888         88 8 8888      88               `8.`888b    88b  ,8'  88 8888         88 8o. `Y888888o. 8\r\n" + 
+				"     `8. 8888   88 8888         88 8 8888      88                `8.`888b .`888b,8'   88 8888         88 8`Y8o. `Y88888o8\r\n" + 
+				"      `8 8888   88 8888        ,8P 8 8888      88                 `8.`888b8.`8888'    88 8888        ,8P 8   `Y8o. `Y8888\r\n" + 
+				"       8 8888   `8 8888       ,8P  ` 8888     ,8P                  `8.`888`8.`88'     `8 8888       ,8P  8      `Y8o. `Y8\r\n" + 
+				"       8 8888    ` 8888     ,88'     8888   ,d8P                    `8.`8' `8,`'       ` 8888     ,88'   8         `Y8o.`\r\n" + 
+				"       8 8888       `8888888P'        `Y88888P'                      `8.`   `8'           `8888888P'     8            `Yo");
+		System.out.println("Congratulations! You're smarter than a robot!");
 	}
 
 	@Override
 	public char getPlayerIcon() {
-		return 'X';
+		return HUMAN_ICON;
 	}
 
+	/** Gets level of play desired from user, where input is 'easy' or 'medium.'
+	 * 
+	 */
+	public static PlayerType getLevelOfPlay() {
+
+		boolean isValidInput = false;
+		PlayerType level = PlayerType.EASYROBOT;
+
+		while(!isValidInput) {
+			System.out.print("Please select a level 'Easy' or 'Medium':");
+			String robotLevel = input.nextLine();
+
+			//if input is not 1 or 2, get new input from user
+			switch(robotLevel.toUpperCase()) {
+			case "EASY": {
+				level = PlayerType.EASYROBOT; 
+				isValidInput = true; 
+				break;
+			}
+			case "MEDIUM": {
+				level = PlayerType.MEDROBOT; 
+				isValidInput = true; 
+				break;
+			}
+			default: 
+				System.out.print("Hmm, I don't understand. Please select 'Easy' or 'Medium': ");
+			}
+		}
+
+		return level;
+	}
 }

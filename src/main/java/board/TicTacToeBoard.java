@@ -1,5 +1,7 @@
 package main.java.board;
 
+import java.util.ArrayList;
+
 /** A singleton that represents the tic tac board.
  * 
  * @author ATL
@@ -7,11 +9,12 @@ package main.java.board;
  */
 public class TicTacToeBoard {
 
-	private final int BOARD_SIZE_ROW = 3;
-	private final int BOARD_SIZE_COL = 3;
 	private final int NUM_BOARD_CELLS = 9;
 	private static TicTacToeBoard game = new TicTacToeBoard();
+	public ArrayList<Integer> availableCells = new ArrayList<Integer>();
 	public char[][] board;
+	public final int BOARD_SIZE_ROW = 3;
+	public final int BOARD_SIZE_COL = 3;
 	private int cellsPlayed;
 
 	private TicTacToeBoard() {
@@ -23,6 +26,11 @@ public class TicTacToeBoard {
 			for(int col = 0; col < BOARD_SIZE_COL; col++ ) {
 				board[row][col] = '-';
 			}
+		}
+		
+		//initialize available cells to all possible
+		for(int i=1; i < NUM_BOARD_CELLS+1;i++) {
+			availableCells.add(i);
 		}
 	}
 
@@ -41,13 +49,14 @@ public class TicTacToeBoard {
 		if(playerInput < 1 || playerInput > 9) return false;
 
 		//translate cell into row and column then check that cell is available
-		int row = playerInput<4 ? 0: (playerInput>6? 2: 1);
-		int col = playerInput<4 ? playerInput-1:(playerInput>6? playerInput-7: playerInput-4);
+		int row = (playerInput-1)/3;
+		int col = (playerInput-1)%3;
 		
-		//if cell is available increment cellsPlayed
+		//if cell is available increment cellsPlayed and remove from available list
 		if(board[row][col] == '-') {
 			cellsPlayed++;
 			board[row][col] = playerIcon;
+			availableCells.remove(availableCells.indexOf(playerInput));
 			return true;
 		}
 
@@ -61,13 +70,16 @@ public class TicTacToeBoard {
 	public void displayBoard() {
 
 		for(int row = 0; row < BOARD_SIZE_ROW; row++) {
-			System.out.print("|");
+			System.out.print("\t\t|");
 			for(int col = 0; col < BOARD_SIZE_COL; col++) {
 				System.out.print(board[row][col]+ "|");
 			}
 			System.out.println();
 		}
-	}
+		
+		System.out.println();
+
+	}		
 
 	/**Determines if a player has won the game by looking to see if there are 3 of the same
 	 * character in a row diagonally, horizontally, or vertically.
@@ -166,30 +178,24 @@ public class TicTacToeBoard {
 		return '-';
 	}
 
-	/** Check to see if all cells have been played and the game is over
+	/** Check to see if all cells have been played and the game is over.
+	 *  If the game is over, display a message showing that there is a tie.
 	 * 
 	 * @return true if no more cells are available
 	 */
 	public boolean isGameOver() {
 		
-		return cellsPlayed >= NUM_BOARD_CELLS;
-	}
-	
-	/** Congratulate or console the human player. In the future this can be
-	 *  modified to account for two humans playing against each other,
-	 *  two robots, and etc.
-	 * 
-	 * @param playerIcon
-	 */
-	public void displayWinner(char playerIcon) {
-		if(playerIcon == 'X') {
-			System.out.println("Congrats you won!!");
-		} else {
-			System.out.println("Aww, sorry you lost.");
+		if(cellsPlayed >= NUM_BOARD_CELLS) {
+			System.out.println("It's a tie! Robots and humans live in harmony.");
+			return true;
 		}
+		
+		return false;
 	}
 
-	//showRules
+	/** Display game rules
+	 * 
+	 */
 	public void showRules() {
 
 		System.out.println("\r\n" + 
@@ -204,7 +210,7 @@ public class TicTacToeBoard {
 		System.out.println("How to Play:\n"
 				+ "    Welcome to TicTac Toe. Try to get 3 in a row! Enter 1-9 to select a cell.\n"
 				+ "    First row is 1-3, second row is 4-6, and lasty row is 7-9. You're 'X' and\n"
-				+ "    the robot is 'O'. Good luck!");
+				+ "    the robot is 'O'. Good luck!\n");
 	}
 
 

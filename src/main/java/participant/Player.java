@@ -9,6 +9,11 @@ public interface Player {
 	 */
 	void makeMove(TicTacToeBoard game);
 	
+	/** Print a congratulation message to the player for winning.
+	 * 
+	 */
+	void congratulatePlayer();
+	
 	/** Returns icon for player. Either 'X' or 'O.' This function can be modified later so that
 	 *  a user can select or create their own icon.
 	 */
@@ -25,7 +30,7 @@ public interface Player {
 		HUMAN,
 		EASYROBOT, /** A dumb robot with no strategy*/
 		MEDROBOT,  /** A slightly smarter robot with some strategy*/
-		ADVROBOT,  /** TODO The ulta-smart-bot! */
+		ADVROBOT,  /** TODO The ultra-smart-bot! */
 
 	}
 

@@ -12,7 +12,6 @@ public class PlayerFactory {
 
 		} else if(playerType == Player.PlayerType.EASYROBOT){
 			return new EasyRobotPlayer();
-
 		} else if(playerType == Player.PlayerType.MEDROBOT){
 			return new MedRobotPlayer();
 		} else if(playerType == Player.PlayerType.ADVROBOT){
