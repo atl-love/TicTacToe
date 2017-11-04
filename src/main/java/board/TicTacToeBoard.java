@@ -17,7 +17,7 @@ public class TicTacToeBoard {
 	public final int BOARD_SIZE_COL = 3;
 	private int cellsPlayed;
 
-	private TicTacToeBoard() {
+	public TicTacToeBoard() {
 		board = new char[BOARD_SIZE_ROW][BOARD_SIZE_COL];
 		cellsPlayed = 0;
 

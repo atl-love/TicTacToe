@@ -1,9 +1,11 @@
 package main.java.participant;
 
+import main.java.participant.Player.PlayerType;
+
 public class PlayerFactory {
 
 	//use getPlayer method to get player type 
-	public Player getPlayer(Enum playerType){
+	public Player getPlayer(Enum<PlayerType> playerType){
 		if(playerType == null){
 			return null;
 		}		
