@@ -1,35 +1,42 @@
 package main.java.participant;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import main.java.board.TicTacToeBoard;
+import main.java.ui.UserInterface;
 
 public class EasyRobotPlayer implements Player{
 	
-	private static char ROBOT_ICON = 'O';
-
 	@Override
-	public void makeMove(TicTacToeBoard game) {
+	public boolean makeMove(TicTacToeBoard game) {
+		
+		//check if moves are available
+		ArrayList<Integer> availableCells = game.getAvailableCells();
+		if(availableCells.size() == 0) {
+			return false;
+		}
 		
 		//shuffle available cells
-		Collections.shuffle(game.availableCells);
+		Collections.shuffle(availableCells); 
 		
 		//make move
-		game.isCellAvailable(game.availableCells.get(0), ROBOT_ICON);
+		game.makeMoveAndMarkCell(availableCells.get(0), UserInterface.ROBOT_ICON);
 		
 		//show updated board and close stream
-		System.out.println("\nRobot just moved:");
-		game.displayBoard();		
+		UserInterface.robotMovedMessage();
+		game.displayBoard();	
+		return true;
 	}
 	
  	
 	@Override
 	public void congratulatePlayer() {
-		System.out.println("Sorry, you lost! Robots are taking over the world.");
+		UserInterface.congratulateRobot();
 	}
 
 	@Override
 	public char getPlayerIcon() {
-		return ROBOT_ICON;
+		return UserInterface.ROBOT_ICON;
 	}	
 
 }

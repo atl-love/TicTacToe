@@ -1,8 +1,10 @@
 package main.java.participant;
 
 import main.java.board.TicTacToeBoard;
+import main.java.ui.UserInterface;
 
-/** This robot has the following algorithms:
+/**TODO 
+ * This robot has the following algorithms:
  * (1) A table that logs the user's inputs, which weights the randomized selection
  * 		- only important for repeated play option
  * (2) A check to see if the opposing player is one away from a win to block the win
@@ -13,21 +15,20 @@ import main.java.board.TicTacToeBoard;
  */
 public class AdvRobotPlayer implements Player {
 
-	private static char ROBOT_ICON = 'O';
-
 	@Override
-	public void makeMove(TicTacToeBoard game) {
+	public boolean makeMove(TicTacToeBoard game) {
 		// TODO Auto-generated method stub
+		return true;
 		
 	}
 	
 	@Override
 	public void congratulatePlayer() {
-		System.out.println("Sorry, you lost! Robots are taking over the world.");
+		UserInterface.congratulateRobot();
 	}
 
 	@Override
 	public char getPlayerIcon() {
-		return ROBOT_ICON;
+		return UserInterface.ROBOT_ICON;
 	}
 }

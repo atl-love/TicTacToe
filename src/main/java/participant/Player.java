@@ -7,7 +7,7 @@ public interface Player {
 	/** Gets a player's move as a numerical input 1-9. For Human player this will be input from
 	 *  the console; for robots, this shall be a randomly generated number.
 	 */
-	void makeMove(TicTacToeBoard game);
+	boolean makeMove(TicTacToeBoard game);
 	
 	/** Print a congratulation message to the player for winning.
 	 * 

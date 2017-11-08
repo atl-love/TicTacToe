@@ -4,6 +4,7 @@ import main.java.board.TicTacToeBoard;
 import main.java.participant.Player;
 import main.java.participant.HumanPlayer;
 import main.java.participant.PlayerFactory;
+import main.java.ui.UserInterface;
 
 public class TicTacToeDemo {
 
@@ -41,7 +42,7 @@ public class TicTacToeDemo {
 
 		}
 
-		System.out.println("Thanks for playing!"); 
+		UserInterface.thankUserForPlayingMessage();
 	}
 
 }
